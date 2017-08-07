@@ -12,11 +12,8 @@ int compare(const void * a , const void * b){
 
 }
 
-int sjf_gen(int pid[] , int at[] , int bt[]){
+void sjf_gen(int pid[] , int at[] , int bt[]){
 	
-	
-		
-	int min=-1;	
 
 	qsort(at,5,sizeof(int),compare);
 
@@ -27,35 +24,40 @@ int sjf_gen(int pid[] , int at[] , int bt[]){
 	int last = 0,index=0;
 
 		int pre[5]={100,100,100,100,100},u=0;
+		
+	
+	for (int i = 1; i < 5; ++i)
+	{   
+		int min = 100;
 		for(int k=1 ; k<5 ; k++){
 			
-			if(ct[last] >= at[k]){
+			if(ct[last] >= at[k] && pre[k] != 101 ){
 				pre[k] = bt[k];
 				u++; 				
 			}
 		}
-	for (int i = 1; i < 5; ++i)
-	{
-		int min = 100;
+		
 
  		if(u==0){
 			printf("\n\nNo more processes!\n\n");
 			break;
 		}
 		else{
-			for(int k=0 ; k<5 ; k++){
-		//		printf(" %d ",pre[k]);
-			}			
+			/*for(int k=0 ; k<5 ; k++){
+				printf(" %d ",pre[k]);
+			}*/			
+			
 
 			for(int k =0; k<5 ; k++){
 				if(min > pre[k]){	
 					min = pre[k];
 					index=k;
-					pre[k] = 100;
 				}
 			}			
+				//printf("min: %d , index: %d \n",min,index);
 
 				if(min!=100){
+					pre[index] = 101;
 				//	printf("\n\nct[last]: %d , min: %d ,index: %d , last: %d \n\n",ct[last],min,index,last);
 					ct[index]=ct[last]+ min;
 					tat[index]=ct[index]-at[index];
