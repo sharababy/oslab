@@ -61,9 +61,21 @@ void refinedsjf::calculateEverything(refinedsjf *obj, int n) {
 }
 
 void refinedsjf::display(refinedsjf obj[], int n) {
+    
+
+
+    
 
     for (int i = 0; i < n; ++i) {
-        cout << i << "\t\t" << obj[i].at << "\t" << obj[i].bt << "\t\t" << obj[i].ct << "\t" << obj[i].tat << "\t\t" << obj[i].wt<<endl;
+        if (i==0)
+        {
+            cout << i+1 << "\t\t" << obj[i].at << "\t\t" << obj[i].bt << "\t\t" << obj[i].ct << "\t\t" << obj[i].tat << "\t\t" << obj[i].wt<<endl;
+        }
+        else{
+            cout << i+1 << "\t\t" << obj[i].at << "\t" << obj[i].bt << "\t\t" << obj[i].ct << "\t" << obj[i].tat << "\t\t" << obj[i].wt<<endl;
+        }
     }
+
+    
 
 }

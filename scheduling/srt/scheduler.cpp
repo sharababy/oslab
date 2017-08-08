@@ -14,31 +14,74 @@ int compare(const void * a , const void * b){
 
 void srt_gen(int pid[] , int at[] , int bt[]){
 	
-
+	int temp;
+	
 	qsort(at,5,sizeof(int),compare);
+
+	printf("Arrival: \n");
+	for (int d = 0; d < 5; ++d)
+		{
+			printf("%d ", at[d]);
+		}
+		printf("\nBurst:\n");
+	for (int d = 0; d < 5; ++d)
+		{
+			printf("%d ", bt[d]);
+		}
+		printf("\n");
+
 
 	int rt[5]={100,100,100,100,100};
 	
-	
+	rt[0] = bt[0]-1;
 	
 	int last = 0,index=0;
-	int pre[5]={100,100,100,100,100},u=0;
-		
 	
-	for (int i = 1; i < 5; ++i)
+	int pending	= 1;
+	int current = 1;
+	
+
+	for (int i = at[0]; pending != 0; ++i)
 	{   
-		int min = 100;
-		for(int k=1 ; k<5 ; k++){
-			
-			if(ct[last] >= at[k] && pre[k] != 101 ){
-				pre[k] = bt[k];
-				u++; 				
-			}
+
+		
+
+		for (int d = 0; d < 5; ++d) // to check for arriving processes 
+		{
+			if (at[d] == i)
+				{
+					rt[d] = bt[d];
+
+				}	
 		}
+
+		for (int d = 0; d < 5; ++d) // to check for completed processes
+		{
+			if (rt[d] == 0)
+				{
+					rt[d] = 101;
+					ct[d] = i;
+					tat[d] = ct[d] - at[d];
+					wt[d]=tat[d]-bt[d];
+				}	
+		}
+
+		int u = 0;
+		for (int d = 0; d < 5; ++d) // to check for current processes [correct]
+		{
+			if (rt[d] != 100 && rt[d] != 101)
+				{
+					u++;
+				}	
+		}
+
+		pending = u;
+
+		int min = 101;
 		
 
  		if(u==0){
-			printf("\n\nNo more processes!\n\n");
+			//printf("\n\nNo more processes!\n\n");
 			break;
 		}
 		else{
@@ -48,25 +91,26 @@ void srt_gen(int pid[] , int at[] , int bt[]){
 			
 
 			for(int k =0; k<5 ; k++){
-				if(min > pre[k]){	
-					min = pre[k];
+				if(min > rt[k]){	
+					min = rt[k];
 					index=k;
 				}
 			}			
 				//printf("min: %d , index: %d \n",min,index);
 
-				if(min!=100){
-					pre[index] = 101;
-				//	printf("\n\nct[last]: %d , min: %d ,index: %d , last: %d \n\n",ct[last],min,index,last);
-					ct[index]=ct[last]+ min;
-					tat[index]=ct[index]-at[index];
-					wt[index]=tat[index]-bt[index];
-					last = index;
-
-
-				}
+			temp = rt[index];
+			
+			rt[index]=temp-1;
+			
 				
 		}
+		/*for (int d = 0; d < 5; ++d)
+		{
+			printf("%d ", rt[d]);
+		}*/
+		//printf("Current time: %d , pending: %d ,min: %d , index: %d , temp: %d\n",i,u,min,index,temp);
+
+
 	}
 	printf("\nShortest Remaining Time First Processing Schedule: ");
 	printf("\n---------------------------------------------------");

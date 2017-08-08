@@ -42,6 +42,10 @@ int main() {
 
     refinedsjf->calculateEverything(refinedsjf, numberofProcesses);
 
+    printf("\nShortest Job First Processing Schedule: ");
+    printf("\n--------------------------------------\n");
+
+
     cout << "PID\t\tAT\t\tBT\t\tCT\t\tTAT\t\tWT"<<endl;
 
     refinedsjf->display(refinedsjf, numberofProcesses);
