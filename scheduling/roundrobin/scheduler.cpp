@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-int ct[5], tat[5], wt[5];
+#define size 6
+int ct[size], tat[size], wt[size];
 
 
 int compare(const void * a , const void * b){
@@ -16,28 +16,27 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 	
 	int temp;
 	
-	qsort(at,5,sizeof(int),compare);
+	qsort(at,size,sizeof(int),compare);
 
 	printf("Arrival: \n");
-	for (int d = 0; d < 5; ++d)
+	for (int d = 0; d < size; ++d)
 		{
 			printf("%d ", at[d]);
 		}
 		printf("\nBurst:\n");
-	for (int d = 0; d < 5; ++d)
+	for (int d = 0; d < size; ++d)
 		{
 			printf("%d ", bt[d]);
 		}
 		printf("\n");
 
 	int tq = 3;
-	int pq[5]={100,100,100,100,100};
-	int qq[200],v=0,begining=0;
+	int pq[size]={100,100,100,100,100,100};
+	int qq[200] = {100} ,v=0,begining=0;
 	
 	qq[0] = 0;
 	v++;
-	pq[0] = bt[0]-tq;
-	
+	pq[0] = bt[0];
 	int last = 0,index=0;
 	
 	int pending	= 1;
@@ -48,10 +47,10 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 	{   
 
 		tq=3;
-
-		for (int d = 0; d < 5; ++d) // to check for arriving processes 
+		
+		for (int d = 0; d < size; ++d) // to check for arriving processes 
 		{
-			if (at[d] == i)
+			if (at[d] <= i && pq[d] == 100 )
 				{
 					pq[d] = bt[d];
 					qq[v] = d;
@@ -59,7 +58,7 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 				}	
 		}
 
-		for (int d = 0; d < 5; ++d) // to check for completed processes
+		for (int d = 0; d < size; ++d) // to check for completed processes
 		{
 			if (pq[d] == 0)
 				{
@@ -71,7 +70,7 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 		}
 
 		int u = 0;
-		for (int d = 0; d < 5; ++d) // to check for current processes 
+		for (int d = 0; d < size; ++d) // to check for current processes 
 		{
 			if (pq[d] != 100 && pq[d] != 101)
 				{
@@ -81,6 +80,15 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 
 		pending = u;
 
+		for(int k=0 ; k<size; k++){
+			printf(" %d ",pq[k]);
+		}
+		printf("-- Q: ");
+		for(int k=begining ; k<v; k++){
+			printf(" %d ",qq[k]);
+		}
+
+		printf(" -- Time: %d \n",i);
 		
 
  		if(u==0){
@@ -88,7 +96,7 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 			break;
 		}
 		else{
-			/*for(int k=0 ; k<5 ; k++){
+			/*for(int k=0 ; k<size; k++){
 				printf(" %d ",pre[k]);
 			}*/			
 			
@@ -103,18 +111,19 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 			if(temp <= 0){
 				temp = 0;
 				tq = pq[index];
-				begining++;
+				
 			}
 			else{
 				qq[v] = index;
 				v++;
 			}
-			
+			begining++;
 			pq[index]=temp;
 			
 				
 		}
-		/*for (int d = 0; d < 5; ++d)
+		
+		/*for (int d = 0; d < size; ++d)
 		{
 			printf("%d ", pq[d]);
 		}*/
@@ -122,11 +131,11 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 
 
 	}
-	printf("\nShortest Remaining Time First Processing Schedule: ");
-	printf("\n---------------------------------------------------");
+	printf("\nRound Robbin Schedule: ");
+	printf("\n----------------------");
 	
 	
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < size; ++i)
 		{
 			printf("\nProcess ID: %d", pid[i]);
 			printf("\tArrival Time: %d", at[i]);
