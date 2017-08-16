@@ -41,7 +41,7 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 	
 	int pending	= 1;
 	int current = 1;
-	
+	int remaining = 200;	
 
 	for (int i = at[0]; pending != 0; i = i+tq)
 	{   
@@ -58,6 +58,13 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 				}	
 		}
 
+		if (remaining != 200)
+		{
+			qq[v] = remaining;
+			v++;
+			remaining=200;
+		}
+		
 		for (int d = 0; d < size; ++d) // to check for completed processes
 		{
 			if (pq[d] == 0)
@@ -80,7 +87,7 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 
 		pending = u;
 
-		for(int k=0 ; k<size; k++){
+		/*for(int k=0 ; k<size; k++){
 			printf(" %d ",pq[k]);
 		}
 		printf("-- Q: ");
@@ -89,7 +96,7 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 		}
 
 		printf(" -- Time: %d \n",i);
-		
+		*/
 
  		if(u==0){
 			//printf("\n\nNo more processes!\n\n");
@@ -114,8 +121,8 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 				
 			}
 			else{
-				qq[v] = index;
-				v++;
+				remaining = index;
+				
 			}
 			begining++;
 			pq[index]=temp;
@@ -131,6 +138,13 @@ void rr_gen(int pid[] , int at[] , int bt[]){
 
 
 	}
+
+	printf("Gantt Chart: ");
+	for (int d = 0; d < v; ++d)
+		{
+			printf("%d  ", qq[d]);
+		}
+
 	printf("\nRound Robbin Schedule: ");
 	printf("\n----------------------");
 	
