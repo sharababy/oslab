@@ -57,7 +57,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	{   
 
 		
-		for (int d = 0; d < size; ++d) // to check for arriving processes 
+		for (int d = 1; d < size; ++d) // to check for arriving processes 
 		{
 			if (at[d] <= i && pq[d] == -1 )
 				{
@@ -68,7 +68,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 		}
 
 		
-		for (int d = 0; d < size; ++d) // to check for completed processes
+		for (int d = 1; d < size; ++d) // to check for completed processes
 		{
 			if (pq[d] == 0)
 				{
@@ -113,7 +113,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 			}*/			
 			
                         
-			for(int hh = 0; hh<size ; hh++){
+			for(int hh = 1; hh<size ; hh++){
 				if(priq[hh] > max){
 				max = priq[hh];
 				index = hh;
