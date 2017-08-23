@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define size 6
 
-int ct[5], tat[5], wt[5];
+int ct[6], tat[6], wt[6];
 
 
 int compare(const void * a , const void * b){
@@ -14,71 +15,67 @@ int compare(const void * a , const void * b){
 
 void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	
+
 	int temp;
 	
-	qsort(at,5,sizeof(int),compare);
-	qsort(pri,5,sizeof(int),compare);
+	qsort(at,6,sizeof(int),compare);
+	qsort(pri,6,sizeof(int),compare);
 
 	printf("Arrival: \n");
-	for (int d = 0; d < 5; ++d)
+	for (int d = 0; d < size; ++d)
 		{
 			printf("%d ", at[d]);
 		}
 		printf("\nBurst:\n");
-	for (int d = 0; d < 5; ++d)
+	for (int d = 0; d < size; ++d)
 		{
 			printf("%d ", bt[d]);
 		}
 		printf("\n");
 		printf("Priority:\n");
-	for (int d = 0; d < 5; ++d)
+	for (int d = 0; d < size; ++d)
 		{
 			printf("%d ", pri[d]);
 		}
 		printf("\n");
 
 	int tq = 1;
-	int pq[size]={100,100,100,100,100,100};
-	int qq[200] = {100} ,v=0,begining=0;
-	int priq[size]={100,100,100,100,100,100};
+	int pq[size]={-1,-1,-1,-1,-1,-1};
+	int qq[200] = {-1} ,v=0,begining=0;
+	int priq[size]={-1,-1,-1,-1,-1,-1};
 	
-	qq[0] = 0;
-	v++;
+	
 	pq[0] = bt[0];
 	int last = 0,index=0;
 	
 	int pending	= 1;
 	int current = 1;
-	int remaining = 200;	
 
-	for (int i = at[0]; pending != 0; i = i+tq)
+	pq[0] = -2;
+	ct[0] = bt[0];
+	tat[0] = ct[0] - at[0];
+	wt[0]=tat[0]-bt[0];
+	
+	for (int i = ct[0]; pending != 0; i++)
 	{   
 
-		tq=1;
 		
 		for (int d = 0; d < size; ++d) // to check for arriving processes 
 		{
-			if (at[d] <= i && pq[d] == 100 )
+			if (at[d] <= i && pq[d] == -1 )
 				{
 					pq[d] = bt[d];
-					priq[d] = pri[p];  
-					qq[v] = d;
-					v++;	
+					priq[d] = pri[d];  
+						
 				}	
 		}
 
-		if (remaining != 200)
-		{
-			qq[v] = remaining;
-			v++;
-			remaining=200;
-		}
 		
 		for (int d = 0; d < size; ++d) // to check for completed processes
 		{
 			if (pq[d] == 0)
 				{
-					pq[d] = 101;
+					pq[d] = -2;
 					ct[d] = i;
 					tat[d] = ct[d] - at[d];
 					wt[d]=tat[d]-bt[d];
@@ -88,7 +85,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 		int u = 0;
 		for (int d = 0; d < size; ++d) // to check for current processes 
 		{
-			if (pq[d] != 100 && pq[d] != 101)
+			if (pq[d] != -1 && pq[d] != -2)
 				{
 					u++;
 				}	
@@ -117,27 +114,18 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 				printf(" %d ",pre[k]);
 			}*/			
 			
-			//decide which process will be executed next based on queue
 
-			for(int hh = 0; hh<5 ; hh++){
+			for(int hh = 0; hh<size ; hh++){
 				if(priq[hh] > max){
-				max = priq[hh]
-				index = hh
+				max = priq[hh];
+				index = hh;
 				}
 			}
 
 			//printf("min: %d , index: %d \n",min,index);
 
-			temp = pq[index] - tq;
+			temp = pq[index] - 1;
 
-			if(temp <= 0){
-				temp = 0;
-				tq = pq[index];
-				
-			}
-			else{
-				remaining = index;
-			}
 			pq[index]=temp;
 			
 				
@@ -156,7 +144,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	printf("\n---------------------------------------------------");
 	
 	
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 6; ++i)
 		{
 			printf("\nProcess ID: %d", pid[i]);
 			printf("\tArrival Time: %d", at[i]);
