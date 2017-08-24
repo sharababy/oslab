@@ -12,7 +12,7 @@ int compare(const void * a , const void * b){
 
 }
 
-void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
+void pnp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	
 	int temp;
 	
@@ -105,6 +105,13 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	
 	printf("\n");
 
+	float avgwt = 0;
+	for (int i = 0; i < 5; ++i)
+	{
+		avgwt+=wt[i];
+	}
+
+	printf("Average waittime: %f\n", avgwt/5);
 
 
 }

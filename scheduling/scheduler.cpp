@@ -84,12 +84,12 @@ void sjf_gen(int pid[] , int at[] , int bt[]){
 		}
 	
 	printf("\n");
-	int avgwt = 0;
+	float avgwt = 0;
 	for (int i = 0; i < 5; ++i)
 	{
 		avgwt+=wt[i];
 	}
 
-	printf("Average waittime: %d\n", avgwt/5);
+	printf("Average waittime: %f\n", avgwt/5);
 
 }

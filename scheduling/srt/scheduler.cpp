@@ -128,6 +128,13 @@ void srt_gen(int pid[] , int at[] , int bt[]){
 	
 	printf("\n");
 
+	int avgwt = 0;
+	for (int i = 0; i < 5; ++i)
+	{
+		avgwt+=wt[i];
+	}
+
+	printf("Average waittime: %d\n", avgwt/5);
 
 
 }

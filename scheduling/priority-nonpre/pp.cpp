@@ -21,7 +21,7 @@ int main()
 		pri[i] = rand()%10 + 1;
 	}
 
-	pp_gen(pid,at,bt,pri);
+	pnp_gen(pid,at,bt,pri);
 	
 	return 0;
 }

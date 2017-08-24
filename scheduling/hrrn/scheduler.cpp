@@ -109,6 +109,12 @@ void hrrn_gen(int pid[] , int at[] , int bt[],int pri[]){
 	
 	printf("\n");
 
+	float avgwt = 0;
+	for (int i = 0; i < 5; ++i)
+	{
+		avgwt+=wt[i];
+	}
 
+	printf("Average waittime: %f\n", avgwt/5);
 
 }

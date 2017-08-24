@@ -12,19 +12,18 @@ using namespace std;
 int main()
 {
 	srand(time(NULL));
-	int pid[6]={1,2,3,4,5,6} ,at[6] = {1,2,2,3,3,4}, bt[6] = {4,2,3,5,1,2},pri[6]={4,5,7,8,5,6};
+	int pid[5]={1,2,3,4,5} ,at[5] = {0,2,4,6,8}, bt[5] = {3,6,4,5,2},pri[5]={0,0,0,0,0};
 	
-	/*for(int i=0;i<6;i++){
+	
+
+/*	for(int i=0;i<5;i++){
 		
 		at[i] = rand()%10 + 1;
 		bt[i] = rand()%10 + 1;
 		pri[i] = rand()%10 + 1;
-	}*/
-
-	pp_gen(pid,at,bt,pri);
+	}
+*/
+	hrrn_gen(pid,at,bt,pri);
 	
 	return 0;
 }
-
-
-// ct: 25 , 22 , 21 , 12 , 19 , 9 , 18

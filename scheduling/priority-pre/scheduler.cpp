@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define size 3
+#define size 6
 
 int ct[size], tat[size], wt[size];
 
@@ -39,9 +39,9 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 		printf("\n");
 
 	int tq = 1;
-	int pq[size]={-1,-1,-1};
+	int pq[size]={-1,-1,-1,-1,-1,-1};
 	int qq[200] = {-1} ,v=0,begining=0;
-	int priq[size]={-1,-1,-1};
+	int priq[size]={-1,-1,-1,-1,-1,-1};
 	
 	
 
@@ -49,11 +49,8 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	
 	int pending= 1;
 	int current = 1;
-
-	pq[0] = bt[0];
-	priq[0]=pri[0];
 	
-	for (int i = ct[0]; pending != 0; i++)
+	for (int i = at[0]; pending != 0; i++)
 	{   
 
 		
@@ -155,6 +152,12 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	
 	printf("\n");
 
+	float avgwt = 0;
+	for (int i = 0; i < 5; ++i)
+	{
+		avgwt+=wt[i];
+	}
 
+	printf("Average waittime: %f\n", avgwt/5);
 
 }
