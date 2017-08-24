@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define size 7
+#define size 3
 
-int ct[7], tat[7], wt[7];
+int ct[size], tat[size], wt[size];
 
 
 int compare(const void * a , const void * b){
@@ -17,7 +17,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 
 	int temp;
 	
-	qsort(at,7,sizeof(int),compare);
+	qsort(at,size,sizeof(int),compare);
 	
 
 	printf("Arrival: \n");
@@ -39,9 +39,9 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 		printf("\n");
 
 	int tq = 1;
-	int pq[size]={-1,-1,-1,-1,-1,-1};
+	int pq[size]={-1,-1,-1};
 	int qq[200] = {-1} ,v=0,begining=0;
-	int priq[size]={-1,-1,-1,-1,-1,-1};
+	int priq[size]={-1,-1,-1};
 	
 	
 
@@ -142,7 +142,7 @@ void pp_gen(int pid[] , int at[] , int bt[],int pri[]){
 	printf("\n---------------------------------------------------");
 	
 	
-		for (int i = 0; i < 7; ++i)
+		for (int i = 0; i < size; ++i)
 		{
 			printf("\nProcess ID: %d", pid[i]);
 			printf("\tArrival Time: %d", at[i]);
