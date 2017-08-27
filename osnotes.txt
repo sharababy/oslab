@@ -1,0 +1,160 @@
+Many criteria have been suggested for comparing CPU-scheduling algo- rithms. Which characteristics are used for comparison can make a substantial difference in which algorithm is judged to be best. The criteria include the following:
+
+• CPU utilization. We want to keep the CPU as busy as possible. Concep- tually, CPU utilization can range from 0 to 100 percent. In a real system, it should range from 40 percent (for a lightly loaded system) to 90 percent (for a heavily loaded system).
+
+• Throughput. If the CPU is busy executing processes, then work is being done. One measure of work is the number of processes that are completed per time unit, called throughput. For long processes, this rate may be one process per hour; for short transactions, it may be ten processes per second.
+
+• Turnaround time. From the point of view of a particular process, the important criterion is how long it takes to execute that process. The interval from the time of submission of a process to the time of completion is the turnaround time. Turnaround time is the sum of the periods spent waiting to get into memory, waiting in the ready queue, executing on the CPU, and doing I/O.
+
+• Waiting time. The CPU-scheduling algorithm does not affect the amount of time during which a process executes or does I/O. It affects only the amount of time that a process spends waiting in the ready queue. Waiting time is the sum of the periods spent waiting in the ready queue.
+
+• Response time. In an interactive system, turnaround time may not be the best criterion. Often, a process can produce some output fairly early and can continue computing new results while previous results are being output to the user. Thus, another measure is the time from the submission of a request until the first response is produced. This measure, called response time, is the time it takes to start responding, not the time it takes to output the response. The turnaround time is generally limited by the speed of the output device.
+
+Scheduling Algos:
+
+	First-Come, First-Served Scheduling:
+
+			With this scheme, the process that requests the CPU first is allocated the CPU first. The implementation of the FCFS policy is easily managed with a FIFO queue.
+
+			The FCFS algorithm is thus particularly troublesome for time-sharing systems, where it is important that each user get a share of the CPU at regular intervals. It would be disastrous to allow one process to keep the CPU for an extended period.
+
+	Shortest-Job-First Scheduling
+
+			This algorithm associates with each process the length of the process’s next CPU burst. When the CPU is available, it is assigned to the process that has the smallest next CPU burst. If the next CPU bursts of two processes are the same, FCFS scheduling is used to break the tie
+
+			The SJF scheduling algorithm is provably optimal, in that it gives the minimum average waiting time for a given set of processes. Moving a short process before a long one decreases the waiting time of the short process more than it increases the waiting time of the long process. Consequently, the average waiting time decreases.
+
+			The real difficulty with the SJF algorithm is knowing the length of the next CPU request. For long-term (job) scheduling in a batch system, we can use the process time limit that a user specifies when he submits the job. In this situation, users are motivated to estimate the process time limit accurately, since a lower value may mean faster response but too low a value will cause a time-limit-exceeded error and require resubmission. SJF scheduling is used frequently in long-term scheduling.
+
+			Although the SJF algorithm is optimal, it cannot be implemented at the level of short-term CPU scheduling. With short-term scheduling, there is no way to know the length of the next CPU burst.
+
+	shortest-remaining-time-first
+
+			The SJF algorithm can be either preemptive or nonpreemptive. The choice arises when a new process arrives at the ready queue while a previous process is still executing. The next CPU burst of the newly arrived process may be shorter than what is left of the currently executing process. A preemptive SJF algorithm will preempt the currently executing process, whereas a nonpreemptive SJF algorithm will allow the currently running process to finish its CPU burst. Preemptive SJF scheduling is sometimes called shortest-remaining-time-first scheduling.
+
+
+	Priority Scheduling
+
+			A priority is associated with each process, and the CPU is allocated to the process with the highest priority. Equal-priority processes are scheduled in FCFS order.
+
+			Priorities can be defined either internally or externally. Internally defined
+			priorities use some measurable quantity or quantities to compute the priority of a process. For example, time limits, memory requirements, the number of open files, and the ratio of average I/O burst to average CPU burst have been used in computing priorities
+
+			External priorities are set by criteria outside the operating system, such as the importance of the process, the type and amount of funds being paid for computer use, the department sponsoring the work, and other, often political, factors.
+
+			A priority scheduling algorithm can leave some low- priority processes waiting indefinitely. In a heavily loaded computer system, a steady stream of higher-priority processes can prevent a low-priority process from ever getting the CPU.
+
+			A solution to the problem of indefinite blockage of low-priority processes is aging. Aging involves gradually increasing the priority of processes that wait in the system for a long time
+
+
+	Round-Robin Scheduling
+
+			The round-robin (RR) scheduling algorithm is designed especially for time- sharing systems. It is similar to FCFS scheduling, but preemption is added to enable the system to switch between processes.
+
+			A small unit of time, called a time quantum or time slice, is defined.
+			The ready queue is treated as a circular queue.
+
+			To implement RR scheduling, we again treat the ready queue as a FIFO queue of processes. New processes are added to the tail of the ready queue. The CPU scheduler picks the first process from the ready queue, sets a timer to interrupt after 1 time quantum, and dispatches the process.
+
+			One of two things will then happen. The process may have a CPU burst of less than 1 time quantum. In this case, the process itself will release the CPU voluntarily. The scheduler will then proceed to the next process in the ready queue. If the CPU burst of the currently running process is longer than 1 time quantum, the timer will go off and will cause an interrupt to the operating system. A context switch will be executed, and the process will be put at the tail of the ready queue. The CPU scheduler will then select the next process in the ready queue.
+
+			The average waiting time under the RR policy is often long. 
+
+			The performance of the RR algorithm depends heavily on the size of the time quantum. At one extreme, if the time quantum is extremely large, the RR policy is the same as the FCFS policy. In contrast, if the time quantum is extremely small (say, 1 millisecond), the RR approach can result in a large number of context switches.
+
+			Thus, we want the time quantum to be large with respect to the context- switch time. If the context-switch time is approximately 10 percent of the time quantum, then about 10 percent of the CPU time will be spent in context switching. In practice, most modern systems have time quanta ranging from 10 to 100 milliseconds. The time required for a context switch is typically less than 10 microseconds; thus, the context-switch time is a small fraction of the time quantum.
+			Turnaround time also depends on the size of the time quantum
+
+			Although the time quantum should be large compared with the context- switch time, it should not be too large. As we pointed out earlier, if the time quantum is too large, RR scheduling degenerates to an FCFS policy. A rule of thumb is that 80 percent of the CPU bursts should be shorter than the time quantum.
+
+
+
+Process Creation
+
+During the course of execution, a process may create several new processes. As mentioned earlier, the creating process is called a parent process, and the new processes are called the children of that process. Each of these new processes may in turn create other processes, forming a tree of processes.
+
+ The pid provides a unique value for each process in the system, and it can be used as an index to access various attributes of a process within the kernel.
+
+ In general, when a process creates a child process, that child process will need certain resources (CPU time, memory, files, I/O devices) to accomplish its task. A child process may be able to obtain its resources directly from the operating system, or it may be constrained to a subset of the resources of the parent process. The parent may have to partition its resources among its children, or it may be able to share some resources (such as memory or files) among several of its children. Restricting a child process to a subset of the parent’s resources prevents any process from overloading the system by creating too many child processes.
+
+ When a process creates a new process, two possibilities for execution exist: 
+	1. The parent continues to execute concurrently with its children.
+	2. The parent waits until some or all of its children have terminated. There are also two address-space possibilities for the new process:
+
+	1. The child process is a duplicate of the parent process (it has the same program and data as the parent).
+	2. The child process has a new program loaded into it.
+
+
+After a fork() system call, one of the two processes typically uses the exec() system call to replace the process’s memory space with a new program. The exec() system call loads a binary file into memory (destroying the memory image of the program containing the exec() system call) and starts its execution. In this manner, the two processes are able to communicate and then go their separate ways. The parent can then create more children; or, if it has nothing else to do while the child runs, it can issue a wait() system call to move itself off the ready queue until the termination of the child.
+
+
+EXEC:
+One system call loads a binary program into memory, replacing the previous contents of the address space, and begins execution of the new program. This is called executing a new program, and the functionality is pro‐ vided by the exec family of calls.
+
+FORK:
+A different system call is used to create a new process, which initially is a near-duplicate of its parent process. Often, the new process immediately executes a new program. The act of creating a new process is called forking, and this functionality is provided by the fork() system call.
+
+Two acts—first a fork to create a new process, and then an exec to load a new binary into that process—are thus required to execute a new program in a new process.
+
+
+EXECL:
+ #include <unistd.h>
+int execl (const char *path, const char *arg,...);
+
+A call to execl() replaces the current process image with a new one by loading into memory the program pointed at by path. The parameter arg is the first argument to this program. The ellipsis signifies a variable number of arguments—the execl() func‐ tion is variadic, which means that additional arguments may optionally follow, one by one. The list of arguments must be NULL-terminated.
+On error, however, execl() returns −1 and sets errno to indicate the problem
+
+EXEC FAMILY:
+
+#include <unistd.h>
+int execlp (const char *file, const char *arg,...);
+int execle (const char *path, const char *arg, ..., char * const envp[]);
+int execv (const char *path, char *const argv[]);
+int execvp (const char *file, char *const argv[]);
+int execve (const char *filename, char *const argv[], char *const envp[] );
+
+
+The mnemonics:
+	The l and v delineate whether the arguments are provided via a list or an array (vector)
+	The p denotes that the user’s full path is searched for the given file.
+	the e notes that a new environment is also supplied for the new process
+
+
+THE FORK SYS CALL:
+
+	A new process running the same image as the current one can be created via the fork() system call:
+    #include <sys/types.h>
+    #include <unistd.h>
+		pid_t fork (void);
+
+	A successful call to fork() creates a new process, identical in almost all aspects to the invoking process. Both processes continue to run, returning from fork() as if nothing special had happened.
+
+	The new process is called the “child” of the original process, which in turn is called the “parent.” In the child, a successful invocation of fork() returns 0. In the parent, fork() returns the pid of the child. The child and the parent process are identical in nearly every facet, except for a few necessary differences:
+		• The pid of the child is, of course, newly allocated and different from that of the parent.
+		• The child’s parent pid is set to the pid of its parent process.
+		• Resource statistics are reset to zero in the child.
+		• Any pending signals are cleared and not inherited by the child (see Chapter 10).
+		• Any acquired file locks are not inherited by the child.
+
+	On error, a child process is not created, fork() returns −1, and errno is set appropriately. There are two possible errno values, with three possible meanings:
+
+	EAGAIN
+	The kernel failed to allocate certain resources, such as a new pid, or the RLIMIT_NPROC resource limit (rlimit) has been reached (see Chapter 6).
+	ENOMEM
+	Insufficient kernel memory was available to complete the request.
+
+	The most common usage of fork() is to create a new process in which a new binary image is then loaded—think a shell running a new program for the user or a process spawning a helper program. First the process forks a new process, and then the child executes a new binary image. This “fork plus exec” combination is frequent and simple. The following example spawns a new process running the binary /bin/windlass:
+
+		pid_t pid;
+		pid = fork (); if (pid == −1)
+		            perror ("fork");
+		    /* the child ... */
+		if (!pid) {
+		const char *args[] = { "windlass", NULL }; int ret;
+		ret = execv ("/bin/windlass", args); if (ret == −1) {
+		} }
+		perror ("execv");
+		exit (EXIT_FAILURE);
+
+
+	The parent process continues running with no change, other than that it now has a new child. The call to execv() changes the child to running the /bin/windlass program.
