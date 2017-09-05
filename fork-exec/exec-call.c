@@ -16,8 +16,8 @@ int main(){
 	else{
 
 
-		execlp("ls","ls",NULL);
 		printf("\n-- We are in the parent\n");
+//		execlp("ls","ls",NULL);
 	}
 
 
