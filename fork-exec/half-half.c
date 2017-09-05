@@ -12,6 +12,7 @@ int main(){
 	printf("original: ");	
 		for(k=0;k<size;k++){
 
+			if(k==half) printf(" ^ ");
 			printf(" %d ", m[k]);
 		}
 		printf("\n\n");
@@ -36,6 +37,7 @@ int main(){
 		}
 		for(i=0;i<size;i++){
 
+			if(i==half) printf(" ^ ");
 			printf(" %d ", m[i]);
 		}
 		printf("\n\n");
@@ -61,6 +63,7 @@ int main(){
 		}
 		for(i=0;i<size;i++){
 
+			if(i==half) printf(" ^ ");
 			printf(" %d ", m[i]);
 		}
 		printf("\n\n");
