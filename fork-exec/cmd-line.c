@@ -9,6 +9,10 @@
 FILE *history;
 int ghc;
 
+struct cmd{
+	char c[1024];
+};
+
 
 void parse(char *line, char **argv)
 {
@@ -57,6 +61,11 @@ void execute(char **argv)
 
           		printf("%d\n",x );   // finally we have x
 
+          		for (int i = 0; i < x; ++i)
+          		{
+          			
+          		}
+
           }
      		//printf("%c\n",*argv[0] );
           else if (execvp(*argv, argv) < 0) {     /* execute the command  */
@@ -68,10 +77,14 @@ void execute(char **argv)
           while (wait(&status) != pid)       /* wait for completion  */
                ;
           
-          fprintf(history, "%s\n", *argv);
+          struct cmd c;
+
+          strcpy(c.c,*argv);
+
+          fwrite(c , 1 , sizeof(str) , history );
+          
           ghc++;
-          
-          
+             
      }
 }
 
