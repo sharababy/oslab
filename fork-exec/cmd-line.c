@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <math.h>
 
 FILE *history;
 int ghc;
@@ -35,7 +36,30 @@ void execute(char **argv)
           exit(1);
      }
      else if (pid == 0) {          /* for the child process:         */
-          if (execvp(*argv, argv) < 0) {     /* execute the command  */
+          
+          if (*argv[0] == '!')
+          {
+          		int k = strlen(argv[0]);
+          		printf("%d\n", k);
+          		char h[k];
+          		strcpy(h,argv[0]);
+          		int i=k-1;
+          		int x = 0;
+          		int p=0;
+          		printf("%s\n",h);
+          		while(i>=1){
+          			char c = h[i];
+          			
+          			x = ((c - '0')* pow(10,p)) + x;	
+          			--i;
+          			++p;
+          		}
+
+          		printf("%d\n",x );   // finally we have x
+
+          }
+     		//printf("%c\n",*argv[0] );
+          else if (execvp(*argv, argv) < 0) {     /* execute the command  */
                printf("*** ERROR: exec failed\n");
                exit(1);
           }
@@ -59,7 +83,7 @@ void  main(void)
 	history = fopen("history.shara", "w+");
 
     while (1) {                   /* repeat until done ....         */
-      printf("sharabups -> ");     /*   display a prompt             */
+      printf("ss -> ");     /*   display a prompt             */
       gets(line);              /*   read in the command line     */
       
       printf("\n");
