@@ -30,7 +30,7 @@ void parse(char *line, char **argv)
 
 
 
-void execute(char **argv)
+void execute(char **argv,FILE* history)
 {
      pid_t  pid;
      int status,correct=0;
@@ -44,13 +44,25 @@ void execute(char **argv)
           if (*argv[0] == '!')
           {
           		int k = strlen(argv[0]);
-          		printf("%d\n", k);
+          		//printf("%d\n", k);
           		char h[k];
           		strcpy(h,argv[0]);
           		int i=k-1;
           		int x = 0;
           		int p=0;
-          		printf("%s\n",h);
+          		//printf("%s\n",h);
+
+              if (h[1] == '!')
+              {
+                
+                  struct cmd c;
+                  fseek(history, -( sizeof(struct cmd) ), SEEK_END);
+                  fread(&c,sizeof(x),1,history);
+                  printf("%s\n",c.c );
+
+              }
+              else{
+
           		while(i>=1){
           			char c = h[i];
           			
@@ -59,12 +71,24 @@ void execute(char **argv)
           			++p;
           		}
 
-          		printf("%d\n",x );   // finally we have x
+          		//printf("%d\n",x );   // finally we have x
 
-          		for (int i = 0; i < x; ++i)
-          		{
-          			
-          		}
+              //printf("%d\n",ghc);
+
+              if (x <= ghc)
+              {
+                for (int i = 0; i < x; ++i)
+                {
+                  struct cmd c;
+                  fseek(history, -( (i+1) * sizeof(struct cmd) ), SEEK_END);
+                  fread(&c,sizeof(x),1,history);
+                  printf("%s\n",c.c );
+                }
+              }
+              else{
+                printf("ERROR: Number to large !\n");
+              }
+              }
 
           }
      		//printf("%c\n",*argv[0] );
@@ -81,19 +105,19 @@ void execute(char **argv)
 
           strcpy(c.c,*argv);
 
-          fwrite(c , 1 , sizeof(str) , history );
+          fwrite(&c , 1 , sizeof(struct cmd) , history );
           
           ghc++;
              
      }
 }
 
-void  main(void)
+int  main(void)
 {
     char  line[1024];             /* the input line                 */
     char  *argv[64];
     ghc = 0;              /* the command line argument      */
-	history = fopen("history.shara", "w+");
+	  FILE* history = fopen("history.shara", "w+");
 
     while (1) {                   /* repeat until done ....         */
       printf("ss -> ");     /*   display a prompt             */
@@ -103,8 +127,10 @@ void  main(void)
       parse(line, argv);       /*   parse the line               */
       if (strcmp(argv[0], "exit") == 0)  /* is it an "exit"?     */
       {     exit(0); fclose(history); }            /*   exit if it is                */
-      execute(argv);           /* otherwise, execute the command */
+      execute(argv,history);           /* otherwise, execute the command */
     }
 
     fclose(history);
+
+    return 0;
 }
