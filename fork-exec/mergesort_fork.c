@@ -94,6 +94,10 @@ int main()
     int arr[] = {9, 1, 3, 5, 6, 17, 10, 44, 13, 19};
     int arr_size = sizeof(arr)/sizeof(arr[0]);
 
+
+    // need to ensure that all elements in left half are 
+    //smaller than all elements in right half
+
     int pivot = 4;
 
     printf("Given array is \n");
