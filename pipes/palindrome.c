@@ -30,7 +30,7 @@ int main(void)
 {
         int     fd[2], nbytes;
         pid_t   childpid;
-        char    string[] = "OsegesO";
+        char    string[] = "osso";
         char    readbuffer[80];
 
         pipe(fd);
