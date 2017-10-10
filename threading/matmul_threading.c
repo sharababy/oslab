@@ -1,46 +1,39 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <unistd.h>
 
-#define SIZE 3
+#define SIZE1 3
+#define SIZE2 3
+#define SIZE3 3
+
+
+int res[SIZE1][SIZE3];
 
 typedef struct Subcal{
 
-	int row;    
-    int row1[SIZE];
-    int row2[SIZE];
-
-    int res[SIZE];
-
+	int rowi;
+	int rowj;    
+	int row1[SIZE2];
+	int row2[SIZE2];
+	
 } subcal;
 
 
 void *mul(void* r){
 	
-	int i,j;
+	int i,j,sum = 0;
 	
 	subcal *d = (subcal *)r;
 	
-/*	for(i=0;i<SIZE;i++){
-		d.row1[i] = (subcal *)r->row1[i];
+	for(i=0;i<SIZE2;i++){
+		sum += d->row1[i] * d->row2[i];
 	}
 	
-	for(i=0;i<SIZE;i++){
-		d.row2[i] = (subcal *)r->row2[i];
-	}
 	
-*/	
-	for(i=0;i<SIZE;i++){
-		d->res[i] = d->row1[i] * d->row2[i];
-	}
-	
-	printf("ROW %d ",d->row);
-	for(i=0;i<SIZE;i++){
-		printf(" %d ",d->res[i]);
-	
-	}
-	
-	printf("\n");
+//	printf(" %d %d -> %d \n",d->rowi , d->rowj,sum);
+		
+	res[d->rowi][d->rowj] = sum;	
 	
 	pthread_exit(0);
 }
@@ -49,35 +42,61 @@ void *mul(void* r){
 int main(){
     
 
-    pthread_t t[SIZE];
+    pthread_t t[SIZE1];
     
-    int a[SIZE][SIZE] = { {1,2,3 },{1,2,3},{ 1,2,3} };
+    int a[SIZE1][SIZE2]={{1,2,3},
+    			 {1,2,3},
+    			 {1,2,3}
+    			};
 
-    int b[SIZE][SIZE] = { {1,2,3 },{1,2,3},{ 1,2,3} };
+    int b[SIZE2][SIZE3]={{1,2,3},
+    			 {1,2,3},
+    			 {1,2,3}
+    			};
 
-    subcal result[SIZE];
+
+    subcal result[SIZE1][SIZE3];
 
     int i,j,k;
-    for(i = 0 ; i<SIZE ; i++){
+    for(i = 0 ; i<SIZE1 ; i++){
     
-	for( j=0 ;j<SIZE; j++)
+	for( j=0 ; j<SIZE3 ; j++)
 	{
-	  result[i].row = i; 
-	  result[i].row1[j] = a[i][j];
-	  result[i].row2[j] = b[i][j];
-	   
+	  
+	  for( k=0 ; k<SIZE2 ; k++){
+	  	result[i][j].rowi = i;
+	  	result[i][j].rowj = j;
+	  	result[i][j].row1[k] = a[i][k];
+	  	result[i][j].row2[k] = b[k][j];
+	  }
+	  
+	  pthread_create(&t[i] , NULL , mul ,&result[i][j]); 
 	} 
-	pthread_create(&t[i] , NULL , mul ,&result[i]);
+	
     
     }
 
-    for(i = 0 ; i<SIZE ; i++){
+
+    for(i = 0 ; i<SIZE1 ; i++){
 
 	 pthread_join(t[i], NULL );
     
     }
-
-    
+		
+	sleep(10);
+		
+	printf("\nResult: \n");
+	for(int i=0 ; i<SIZE1 ; i++){
+	
+		for(int j=0 ; j<SIZE3; j++){
+			
+			printf(" %d ",res[i][j]);
+		
+		}
+		
+		printf("\n");	
+	} 		
+ 	   
 	return 0;
 
 }
