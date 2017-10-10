@@ -13,7 +13,7 @@ void count(char* s){
 
         if (s[i] == ' ')
             wc++;    
-        else if (s[i] == '\n')
+        else if (s[i] == '.' || s[i] == '?')
         {
             lc++;
         }
@@ -52,7 +52,7 @@ int main(void)
                close(fd[0]);
 
                printf("\nSending String : ' %s '\n",string);
-                
+                count(string);
                 write(fd[1], string, (strlen(string)+1));
                 exit(0);
         }
@@ -62,7 +62,7 @@ int main(void)
 
                 nbytes = read(fd[0], readbuffer, sizeof(readbuffer));
 
-                count(readbuffer);
+                
                 
                 printf("\nReceived string: %s\n", readbuffer);
         }

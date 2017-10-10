@@ -17,6 +17,8 @@ void upper_string(char s[]) {
 }
 
 
+
+
 int main(void)
 {
         int     fd[2], nbytes;
