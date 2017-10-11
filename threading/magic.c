@@ -59,7 +59,7 @@ void *generateSquare(void * p)
     }
 
     pthread_exit(0);
-    // e1f7086c03c8ea17ed2daa7dbebf9f3d32591796
+    // 08791b398cef629a02d7c94168fee7dbf22ca69d
 }
 
 void* verticalCheck(void* p){
