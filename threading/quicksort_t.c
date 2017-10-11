@@ -1,8 +1,18 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#define SIZE 5
+#define SIZE 10
   
+
+typedef struct Set{
+
+    int *arr;
+    int low;
+    int high;
+    
+} set;
+
+
 // A utility function to swap two elements
 void swap(int* a, int* b)
 {
@@ -40,13 +50,7 @@ int partition (int arr[], int low, int high)
   low  --> Starting index,
   high  --> Ending index */
   
-typedef struct Set{
-
-	int arr[SIZE];
-	int low;
-	int high;
-	
-} set 
+ 
   
   
 void *quickSort(void * s)
@@ -62,21 +66,25 @@ void *quickSort(void * s)
  	set f,g;
  	f.arr = d->arr;
  	f.low = d->low;
- 	f.high = d->pi-1;
+ 	f.high = (pi)-1;
  	
  	g.arr = d->arr;
- 	g.low = d->pi+1;
+ 	g.low = (pi)+1;
  	g.high = d->high;
  	
  	pthread_t t1,t2;
-        // Separately sort elements before
-        // partition and after partition
-        pthread_create(&t1 , NULL , quickSort , &f );
-        pthread_create(&t2 , NULL , quickSort , &g );
+    // Separately sort elements before
+    // partition and after partition
+    pthread_create(&t1 , NULL , quickSort , &f );
+    pthread_create(&t2 , NULL , quickSort , &g );
         
-        pthread_join(t1,NULL);
-        pthread_join(t2,NULL);
+    pthread_join(t1,NULL);
+    pthread_join(t2,NULL);
+
     }
+
+
+    pthread_exit(0);
 }
  
 /* Function to print an array */
@@ -85,16 +93,29 @@ void printArray(int arr[], int size)
     int i;
     for (i=0; i < size; i++)
         printf("%d ", arr[i]);
-    printf("n");
+    printf("\n");
 }
  
 // Driver program to test above functions
 int main()
 {
-    int arr[SIZE] = {10, 7, 8, 9, 1, 5};
+    int arr[SIZE] = {10, 7, 8, 2, 1, 5,19,3,22,11};
     int n = SIZE;
-    quickSort(arr, 0, n-1);
-    printf("Sorted array: n");
+
+    pthread_t t2;
+    set g;
+
+    g.arr = arr;
+    g.low = 0;
+    g.high = n-1;
+    
+
+    pthread_create(&t2 , NULL , quickSort , &g );
+
+    pthread_join(t2,NULL);
+
+    printf("Sorted array:\n");
+
     printArray(arr, n);
     return 0;
 }

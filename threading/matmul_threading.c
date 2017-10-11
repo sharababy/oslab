@@ -82,8 +82,30 @@ int main(){
 	 pthread_join(t[i], NULL );
     
     }
+	
+	printf("\nInput 1: \n");
+	for(int i=0 ; i<SIZE1 ; i++){
+	
+		for(int j=0 ; j<SIZE3; j++){
+			
+			printf(" %d ",a[i][j]);
 		
-	sleep(10);
+		}
+		
+		printf("\n");	
+	}
+
+	printf("\nInput 2: \n");
+	for(int i=0 ; i<SIZE1 ; i++){
+	
+		for(int j=0 ; j<SIZE3; j++){
+			
+			printf(" %d ",b[i][j]);
+		
+		}
+		
+		printf("\n");	
+	}
 		
 	printf("\nResult: \n");
 	for(int i=0 ; i<SIZE1 ; i++){

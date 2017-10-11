@@ -5,7 +5,7 @@
 #include <sys/types.h>
 
 
-void palindrome(char* s){
+void palindrome(char s[]){
 
     char r[strlen(s)];
 
@@ -46,9 +46,9 @@ int main(void)
                 
                close(fd[0]);
 
-               printf("\nSending String : ' %s '\n",string);
+               printf("\nSending String :  %s \n", string);
                 
-                write(fd[1], string, (strlen(string)+1));
+                write(fd[1], string, (sizeof(string)));
                 exit(0);
         }
         else
