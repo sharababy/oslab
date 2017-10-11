@@ -25,9 +25,9 @@ void swap(int* a, int* b)
 int partition (int arr[], int low, int high)
 {
     int pivot = arr[high];    // pivot
-    int i = (low - 1);  // Index of smaller element
+    int j,i = (low - 1);  // Index of smaller element
  
-    for (int j = low; j <= high- 1; j++)
+    for (j = low; j <= high- 1; j++)
     {
         // If current element is smaller than or
         // equal to pivot
@@ -69,10 +69,14 @@ void *quickSort(void * s)
  	g.high = d->high;
  	
  	pthread_t t1,t2;
+    pthread_attr_t tattr;
+    pthread_attr_init(&tattr);
+    pthread_attr_setschedpolicy(&tattr, SCHED_OTHER);
+    
     // Separately sort elements before
     // partition and after partition
-    pthread_create(&t1 , NULL , quickSort , &f );
-    pthread_create(&t2 , NULL , quickSort , &g );
+    pthread_create(&t1 , &tattr , quickSort , &f );
+    pthread_create(&t2 , &tattr , quickSort , &g );
         
     pthread_join(t1,NULL);
     pthread_join(t2,NULL);

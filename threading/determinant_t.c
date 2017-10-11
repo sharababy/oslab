@@ -16,10 +16,10 @@ void getCofactor(int mat[N][N], int temp[N][N], int p, int q, int n)
 {
     int i = 0, j = 0;
  
-
-    for (int row = 0; row < n; row++)
+    int row,col;
+    for (row = 0; row < n; row++)
     {
-        for (int col = 0; col < n; col++)
+        for ( col = 0; col < n; col++)
         {
             if (row != p && col != q)
             {
@@ -40,36 +40,44 @@ void* determinantOfMatrix(void* p)
     set *d = (set*)p;
 
     int D = 0; // Initialize result
- 
+ 	int i,j;
     
     if (d->n == 1)
         return (void *)&(d->mat[0][0]);
  
     int temp[N][N]; // To store cofactors
- 
+ 	for ( i = 0; i < N; ++i)
+        {
+            for ( j = 0; j < N; ++j)
+            {
+                temp[i][j] = -1;
+            }
+            
+        }
     int sign = 1;  // To store sign multiplier
  
-    
-    for (int f = 0; f < d->n; f++)
+    int f;
+    for ( f = 0; f < d->n; f++)
     {
         void *det;
         getCofactor(d->mat, temp, 0, f, d->n);
         
         pthread_t t;
         set s;
-        for (int i = 0; i < N; ++i)
+        
+        for ( i = 0; i < N; ++i)
         {
-            for (int j = 0; j < N; ++j)
+            for ( j = 0; j < N; ++j)
             {
-                s.mat[i][j] = d->mat[i][j];
+                s.mat[i][j] = temp[i][j];
             }
             
         }
         s.n = (d->n) - 1;
         pthread_create(&t , NULL , determinantOfMatrix , &s);
         pthread_join(t,&det);
-        printf("Return %d\n",(int)det );
-        D += sign * d->mat[0][f] * (int)det;
+        printf("Return %d\n",*(int*)det );
+        D += sign * d->mat[0][f] * (*(int*)det);
     
         sign = -sign;
     }
@@ -81,9 +89,10 @@ void* determinantOfMatrix(void* p)
 
 void display(int mat[N][N], int row, int col)
 {
-    for (int i = 0; i < row; i++)
+	int i,j;
+    for ( i = 0; i < row; i++)
     {
-        for (int j = 0; j < col; j++)
+        for ( j = 0; j < col; j++)
             printf("  %d", mat[i][j]);
         printf("n");
     }
@@ -103,9 +112,10 @@ int main()
                     };
 
     set s;
-    for (int i = 0; i < N; ++i)
+    int i,j;
+    for ( i = 0; i < N; ++i)
     {
-        for (int j = 0; j < N; ++j)
+        for ( j = 0; j < N; ++j)
         {
             s.mat[i][j] = mat[i][j];
         }
@@ -115,11 +125,14 @@ int main()
     s.n = N;
     void *f;
     pthread_t t;
+    pthread_attr_t tattr;
+    pthread_attr_init(&tattr);
+    pthread_attr_setschedpolicy(&tattr, SCHED_FIFO);
 
-    pthread_create(&t , NULL , determinantOfMatrix , &s);
+    pthread_create(&t , &tattr , determinantOfMatrix , &s);
 
     pthread_join(t , &f);
 
-    printf("Determinant of the matrix is : %d\n",(int)f);
+    printf("Determinant of the matrix is : %d\n",*(int*)f);
     return 0;
 }

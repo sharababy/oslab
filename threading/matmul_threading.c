@@ -41,7 +41,10 @@ void *mul(void* r){
 
 int main(){
     
-
+	pthread_attr_t tattr;
+    pthread_attr_init(&tattr);
+    pthread_attr_setschedpolicy(&tattr, SCHED_OTHER);
+    
     pthread_t t[SIZE1];
     
     int a[SIZE1][SIZE2]={{1,2,3},
@@ -70,7 +73,7 @@ int main(){
 	  	result[i][j].row2[k] = b[k][j];
 	  }
 	  
-	  pthread_create(&t[i] , NULL , mul ,&result[i][j]); 
+	  pthread_create(&t[i] , &tattr , mul ,&result[i][j]); 
 	} 
 	
     
@@ -84,9 +87,9 @@ int main(){
     }
 	
 	printf("\nInput 1: \n");
-	for(int i=0 ; i<SIZE1 ; i++){
+	for(i=0 ; i<SIZE1 ; i++){
 	
-		for(int j=0 ; j<SIZE3; j++){
+		for( j=0 ; j<SIZE3; j++){
 			
 			printf(" %d ",a[i][j]);
 		
@@ -96,9 +99,9 @@ int main(){
 	}
 
 	printf("\nInput 2: \n");
-	for(int i=0 ; i<SIZE1 ; i++){
+	for( i=0 ; i<SIZE1 ; i++){
 	
-		for(int j=0 ; j<SIZE3; j++){
+		for( j=0 ; j<SIZE3; j++){
 			
 			printf(" %d ",b[i][j]);
 		
@@ -108,9 +111,9 @@ int main(){
 	}
 		
 	printf("\nResult: \n");
-	for(int i=0 ; i<SIZE1 ; i++){
+	for( i=0 ; i<SIZE1 ; i++){
 	
-		for(int j=0 ; j<SIZE3; j++){
+		for( j=0 ; j<SIZE3; j++){
 			
 			printf(" %d ",res[i][j]);
 		

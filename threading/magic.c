@@ -20,8 +20,8 @@ void *generateSquare(void * p)
     int i = n/2;
     int j = n-1;
  
-    
-    for (int num=1; num <= n*n; )
+    int num;
+    for (num=1; num <= n*n; )
     {
         if (i==-1 && j==n)
         {
@@ -66,9 +66,9 @@ void* verticalCheck(void* p){
 
     int index = *(int*)p;
 
-    int check = 0;
+    int i,check = 0;
 
-    for (int i = 0; i < SIZE; ++i)
+    for (i = 0; i < SIZE; ++i)
     {
         check += square[i][index];
     }
@@ -85,9 +85,9 @@ void* horizontalCheck(void* p){
 
     int index = *(int*)p;
 
-    int check = 0;
+    int i,check = 0;
 
-    for (int i = 0; i < SIZE; ++i)
+    for (i = 0; i < SIZE; ++i)
     {
         check += square[index][i];
     }
@@ -106,8 +106,12 @@ int main()
 {
     int n = SIZE; 
     
+
     sum = n*(n*n+1)/2;
 
+    pthread_attr_t tattr;
+    pthread_attr_init(&tattr);
+    pthread_attr_setschedpolicy(&tattr, SCHED_OTHER);
     pthread_t make_square;
 
     pthread_create(&make_square , NULL , generateSquare , &n);
@@ -124,7 +128,7 @@ int main()
     for (i = 0; i < n ; ++i)
     {
         v[i] = i;
-        pthread_create(&vertical_checker_threads[i] , NULL , verticalCheck , &v[i]);
+        pthread_create(&vertical_checker_threads[i] , &tattr , verticalCheck , &v[i]);
     }
     for (i = 0; i < n; ++i)
     {
@@ -134,7 +138,7 @@ int main()
     for (i = 0; i < n; ++i)
     {
         h[i] = i;
-        pthread_create(&horizontal_checker_threads[i] , NULL , horizontalCheck , &h[i]);
+        pthread_create(&horizontal_checker_threads[i] , &tattr , horizontalCheck , &h[i]);
     }
     for ( i = 0; i < n; ++i)
     {
