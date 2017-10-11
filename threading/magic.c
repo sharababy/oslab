@@ -4,8 +4,15 @@
 #include <pthread.h>
 
 
-void generateSquare(int n)
+#define SIZE 7
+
+
+int square[SIZE][SIZE];
+int sum;
+
+void *generateSquare(void * p)
 {
+    int n = *(int*)p;
     int magicSquare[n][n]; 
     
     memset(magicSquare, 0, sizeof(magicSquare));
@@ -44,15 +51,96 @@ void generateSquare(int n)
             n, n*(n*n+1)/2);
     for(i=0; i<n; i++)
     {
-        for(j=0; j<n; j++)
+        for(j=0; j<n; j++){
             printf("%3d ", magicSquare[i][j]);
+            square[i][j] = magicSquare[i][j];
+        }
         printf("\n");
     }
+
+    pthread_exit(0);
+
 }
+
+void* verticalCheck(void* p){
+
+    int index = *(int*)p;
+
+    int check = 0;
+
+    for (int i = 0; i < SIZE; ++i)
+    {
+        check += square[i][index];
+    }
+
+    if (check == sum)
+    {
+        printf("Verifed Row %d \n", index);
+    }
+
+    pthread_exit(0);
+}
+
+void* horizontalCheck(void* p){
+
+    int index = *(int*)p;
+
+    int check = 0;
+
+    for (int i = 0; i < SIZE; ++i)
+    {
+        check += square[index][i];
+    }
+
+    if (check == sum)
+    {
+        printf("Verifed Col %d \n", index);
+    }
+
+    pthread_exit(0);
+}
+
+
  
 int main()
 {
-    int n = 7; 
-    generateSquare(n);
+    int n = SIZE; 
+    
+    sum = n*(n*n+1)/2;
+
+    pthread_t make_square;
+
+    pthread_create(&make_square , NULL , generateSquare , &n);
+
+    pthread_join(make_square,NULL);
+
+    int thread_count = n + n + 2;
+
+    pthread_t vertical_checker_threads[n];
+    pthread_t horizontal_checker_threads[n];
+
+    int i,v[n],h[n];
+
+    for (i = 0; i < n ; ++i)
+    {
+        v[i] = i;
+        pthread_create(&vertical_checker_threads[i] , NULL , verticalCheck , &v[i]);
+    }
+    for (i = 0; i < n; ++i)
+    {
+        pthread_join(vertical_checker_threads[i] , NULL);
+    }
+
+    for (i = 0; i < n; ++i)
+    {
+        h[i] = i;
+        pthread_create(&horizontal_checker_threads[i] , NULL , horizontalCheck , &h[i]);
+    }
+    for ( i = 0; i < n; ++i)
+    {
+        pthread_join(horizontal_checker_threads[i] , NULL);
+    }
+    
+
     return 0;
 }
