@@ -85,6 +85,10 @@
 		<div class="court"></div>
 		<div class="judgeSentence"></div>
 		<img src="judge.png" class="judge">
+		
+		<div class="swear">
+			<div class="tags">Checked In:</div>
+		</div>		
 
 		<div class="spec"></div>
 
@@ -94,6 +98,10 @@
 		<div class="immigrants">
 			<div class="tags">Entered:</div>
 		</div>
+
+
+
+
 		<script>
 
 			var sCount = 0,iCount=0;
@@ -130,20 +138,35 @@
 
 
 			function createImmigrant(){
-				var $figure = $(`<figure></figure>`)
-				var $caption = $(`<figcaption>Immigrant `+iCount+`</figcaption>`)
-				var $immigrant = $(`<img src="person.png"/>`);
-				$immigrant.attr("height","100px")
-				$immigrant.attr("width","100px")
-				$figure.attr("id","immg"+iCount)
-				$figure.attr("class", "immg")
-				iCount++;
 
-				$(".immigrants").append($figure)
-				$($figure).append($immigrant)
-				$($figure).append($caption)
+				if (judgeState === 0) {
+					var $figure = $(`<figure></figure>`)
+					var $caption = $(`<figcaption>Immigrant `+iCount+`</figcaption>`)
+					var $immigrant = $(`<img src="person.png"/>`);
+					$immigrant.attr("height","100px")
+					$immigrant.attr("width","100px")
+					$figure.attr("id","immg"+iCount)
+					$figure.attr("class", "immg")
 
-			}	
+					$(".immigrants").append($figure)
+					$($figure).append($immigrant)
+					$($figure).append($caption)
+
+					setTimeout(checkinImmigrant, 3000 , iCount)
+
+					iCount++;
+				}
+			}
+
+			function checkinImmigrant(id){
+
+				$("#immg"+id).detach().appendTo('.checkedIn')
+
+
+
+			}
+
+
 
 			function createSpec(){
 				var $figure = $(`<figure></figure>`)
@@ -226,6 +249,8 @@
 				}
 
 			}
+
+
 
 			function start(){
 				var i=0;
