@@ -1,0 +1,150 @@
+<html>
+	
+	<head>
+		<title>Faneuil Hall</title>
+		<script type="text/javascript" src="jquery.min.js"></script>
+
+		<style type="text/css">
+			
+			body{
+				width:100%;
+				overflow-x: hidden;
+			}
+
+
+			.judge{
+				width:100px;
+				height: 100px;
+				position: absolute;
+				top:50px;
+				right:-200px;
+				transition: right 2s linear;
+			}
+
+			.immigrants{
+				position: absolute;
+				top:300px;
+				left:0px;
+
+			}
+			.spec{
+				position: absolute;
+				top:200px;
+				right:0px;
+			}
+
+			.spect{
+				height:100px;
+				width:auto;
+			}
+			.court{
+				position: absolute;
+				top:0;
+				left:0;
+				width:100%;
+				height:200px;
+				background: #fe872b;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		
+		<div class="court"></div>
+		<img src="judge.png" class="judge">
+
+		<div class="spec"></div>
+
+		<div class="immigrants">
+			
+		</div>
+		<script>
+
+			var sCount = 0,iCount=0,jExist=0;
+
+			function enterJudge(){
+
+				$(".judge").css({"right":"47%"});
+				jExist = 1;
+
+			}
+
+			function exitJudge(){
+
+				$(".judge").css({"right":"-200px"});
+				jExist = 0;
+
+			}
+
+
+			function createImmigrant(){
+				var $immigrant = $(`<img src="person.png"/>`);
+				$immigrant.attr("height","100px")
+				$immigrant.attr("width","100px")
+				$immigrant.attr("id","immg"+iCount)
+				$immigrant.attr("class", "immg")
+				iCount++;
+
+				$(".immigrants").append($immigrant)
+
+			}	
+
+			function createSpec(){
+				var t = (parseInt(Math.random()*100)%3) + 1
+				var $spect = $('<img src="spec'+t+'.png"/>');
+				$spect.attr("id","spec"+sCount)
+				$spect.attr("class", "spect")
+
+				sCount++;
+
+				$(".spec").append($spect)
+
+			
+			}
+
+
+			setTimeout(createSpec, 1500)
+			setTimeout(createSpec, 2000)
+			setTimeout(createSpec, 2500)
+			setTimeout(createImmigrant,1000)
+			setTimeout(createImmigrant,1500)
+			setTimeout(createImmigrant,1600)
+			setTimeout(enterJudge, 3000)
+			setTimeout(enterJudge, 3000)
+
+
+			function randomActivity(){
+
+				/*
+					Every 0.5 sec one of 3 things will happen
+
+					1. Judge Activity
+					2. Immigrant Activity
+					3. Spectator Acitivity
+					
+				*/
+
+				var k = parseInt(Math.random()*100)%3
+
+				if(k == 0){
+					
+					
+					
+				}
+
+			}
+
+			function start(){
+				var i=0;
+				while(i == 10){
+					setTimeout(randomActivity,500)
+					i++;
+				}
+			}
+
+
+		</script>
+	</body>
+
+</html>
