@@ -11,14 +11,14 @@
 				overflow-x: hidden;
 			}
 
-
 			.judge{
 				width:100px;
 				height: 100px;
 				position: absolute;
 				top:50px;
 				right:-200px;
-				transition: right 2s linear;
+				transition: right 1s;
+				transition-timing-function: ease-out;
 			}
 
 			.immigrants{
@@ -45,6 +45,15 @@
 				height:200px;
 				background: #fe872b;
 			}
+
+			.judgeSentence{
+				position: absolute;
+				top:35px;
+				left:53%;
+				font-size: 40px;
+				font-family: sans-serif;
+			}
+
 		</style>
 	</head>
 
@@ -52,6 +61,7 @@
 
 		
 		<div class="court"></div>
+		<div class="judgeSentence"></div>
 		<img src="judge.png" class="judge">
 
 		<div class="spec"></div>
@@ -61,21 +71,37 @@
 		</div>
 		<script>
 
-			var sCount = 0,iCount=0,jExist=0;
+			var sCount = 0,iCount=0;
+
+			var judgeState = 0;
+
+
 
 			function enterJudge(){
 
 				$(".judge").css({"right":"47%"});
-				jExist = 1;
+
+
+				judgeState = 1;
 
 			}
 
 			function exitJudge(){
 
 				$(".judge").css({"right":"-200px"});
-				jExist = 0;
+				judgeState = 0;
 
 			}
+
+			function confirmJudge(){
+
+				$(".judgeSentence").html("Confirmed !");
+
+				setTimeout(function (){ $(".judgeSentence").empty(); } , 2000)
+
+			}
+
+
 
 
 			function createImmigrant(){
@@ -112,6 +138,7 @@
 			setTimeout(createImmigrant,1600)
 			setTimeout(enterJudge, 3000)
 			setTimeout(enterJudge, 3000)
+			setTimeout(confirmJudge, 3300)
 
 
 			function randomActivity(){
@@ -119,15 +146,46 @@
 				/*
 					Every 0.5 sec one of 3 things will happen
 
-					1. Judge Activity
-					2. Immigrant Activity
-					3. Spectator Acitivity
-					
+					0. Judge Activity
+						enter,
+						confirm,
+						leave,
+					1. Immigrant Activity
+						enter, 
+						checkIn, 
+						sitDown, 
+						swear, 
+						getCertificate ,
+						leave
+					2. Spectator Acitivity
+						enter,
+						spectate,
+						leave
+
+						While the judge is in the building, no one may enter and immigrants may not leave.
+
+						The judge can not confirm until all immigrants who have invoked enter have also invoked checkIn.
+
+						Immigrants can not getCertificate until the judge has executed confirm.
+
 				*/
 
 				var k = parseInt(Math.random()*100)%3
 
 				if(k == 0){
+					
+					
+					
+				}
+
+				if(k == 1){
+					
+					
+					
+				}
+
+				
+				if(k == 2){
 					
 					
 					
