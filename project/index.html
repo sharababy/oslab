@@ -21,19 +21,34 @@
 				transition-timing-function: ease-out;
 			}
 
-			.immigrants{
+			.checkedIn{
 				position: absolute;
 				top:300px;
 				left:0px;
+				display: inline-flex;
+			}
+			.immigrants{
+				position: absolute;
+				top:450px;
+				left:0px;
+				display: inline-flex;
+			}
 
+			figure{
+				margin:10;
+			}
+
+			figcaption{
+				text-align: center;
 			}
 			.spec{
 				position: absolute;
 				top:200px;
 				right:0px;
+				display: inline-flex;
 			}
 
-			.spect{
+			.spectImage{
 				height:100px;
 				width:auto;
 			}
@@ -52,6 +67,13 @@
 				left:53%;
 				font-size: 40px;
 				font-family: sans-serif;
+				color:#444;
+			}
+
+			.tags{
+				font-size: 30px;
+				font-family:sans-serif;
+				color:#888;
 			}
 
 		</style>
@@ -66,8 +88,11 @@
 
 		<div class="spec"></div>
 
+		<div class="checkedIn">
+			<div class="tags">Checked In:</div>
+		</div>
 		<div class="immigrants">
-			
+			<div class="tags">Entered:</div>
 		</div>
 		<script>
 
@@ -105,26 +130,35 @@
 
 
 			function createImmigrant(){
+				var $figure = $(`<figure></figure>`)
+				var $caption = $(`<figcaption>Immigrant `+iCount+`</figcaption>`)
 				var $immigrant = $(`<img src="person.png"/>`);
 				$immigrant.attr("height","100px")
 				$immigrant.attr("width","100px")
-				$immigrant.attr("id","immg"+iCount)
-				$immigrant.attr("class", "immg")
+				$figure.attr("id","immg"+iCount)
+				$figure.attr("class", "immg")
 				iCount++;
 
-				$(".immigrants").append($immigrant)
+				$(".immigrants").append($figure)
+				$($figure).append($immigrant)
+				$($figure).append($caption)
 
 			}	
 
 			function createSpec(){
+				var $figure = $(`<figure></figure>`)
+				var $caption = $(`<figcaption>Spectator `+sCount+`</figcaption>`)
 				var t = (parseInt(Math.random()*100)%3) + 1
 				var $spect = $('<img src="spec'+t+'.png"/>');
-				$spect.attr("id","spec"+sCount)
-				$spect.attr("class", "spect")
+				$figure.attr("id","spec"+sCount)
+				$figure.attr("class", "spect")
 
+				$($spect).attr("class","spectImage")
 				sCount++;
 
-				$(".spec").append($spect)
+				$(".spec").append($figure)
+				$($figure).append($spect)
+				$($figure).append($caption)
 
 			
 			}
