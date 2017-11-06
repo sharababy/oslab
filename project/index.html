@@ -27,9 +27,20 @@
 				left:0px;
 				display: inline-flex;
 			}
+
+			.immgImg{
+				background: transparent;
+			}
+
 			.immigrants{
 				position: absolute;
 				top:450px;
+				left:0px;
+				display: inline-flex;
+			}
+			.swear{
+				position: absolute;
+				top:50px;
 				left:0px;
 				display: inline-flex;
 			}
@@ -67,13 +78,37 @@
 				left:53%;
 				font-size: 40px;
 				font-family: sans-serif;
-				color:#444;
+				
 			}
 
+			.grey{
+				color:#444;
+			}
+			.white{
+				color:#FFF;
+			}
 			.tags{
 				font-size: 30px;
 				font-family:sans-serif;
+				
+			}
+
+			.silver{
 				color:#888;
+			}
+
+			#makeImmigrant{
+				position: absolute;
+				bottom:10px;
+				left:30px;
+			}
+
+			.notifyBox{
+				position: absolute;
+				top:30px;
+				left:30px;
+				font-size: 30px;
+				font-family: sans-serif;
 			}
 
 		</style>
@@ -82,24 +117,28 @@
 	<body>
 
 		
+		
 		<div class="court"></div>
-		<div class="judgeSentence"></div>
+
+		<div class="notifyBox white"></div>
+
+		<div class="judgeSentence grey"></div>
 		<img src="judge.png" class="judge">
 		
 		<div class="swear">
-			<div class="tags">Checked In:</div>
+			<div class="tags white">Swearing In: </div>
 		</div>		
 
 		<div class="spec"></div>
 
 		<div class="checkedIn">
-			<div class="tags">Checked In:</div>
+			<div class="tags silver">Checked In:</div>
 		</div>
 		<div class="immigrants">
-			<div class="tags">Entered:</div>
+			<div class="tags silver">Entered:</div>
 		</div>
 
-
+		<button id="makeImmigrant" onclick="return createImmigrant()">Enter Immigrant</button>
 
 
 		<script>
@@ -134,6 +173,14 @@
 
 			}
 
+			function notify(msg){
+
+				$(".notifyBox").html(msg);
+
+				setTimeout(function (){ $(".notifyBox").empty(); } , 2000)
+
+			}
+
 
 
 
@@ -145,6 +192,7 @@
 					var $immigrant = $(`<img src="person.png"/>`);
 					$immigrant.attr("height","100px")
 					$immigrant.attr("width","100px")
+					$immigrant.attr("class","immgImg")
 					$figure.attr("id","immg"+iCount)
 					$figure.attr("class", "immg")
 
@@ -152,17 +200,28 @@
 					$($figure).append($immigrant)
 					$($figure).append($caption)
 
-					setTimeout(checkinImmigrant, 3000 , iCount)
+					setTimeout(checkinImmigrant, 2000 , iCount)
 
 					iCount++;
 				}
+
+				else{
+
+				}
+
+				return false
 			}
 
 			function checkinImmigrant(id){
 
 				$("#immg"+id).detach().appendTo('.checkedIn')
 
+				setTimeout(swearImmigrant, 2000 , id)
+			}
 
+			function swearImmigrant(id){
+
+				$("#immg"+id).detach().appendTo('.swear')
 
 			}
 
@@ -187,15 +246,13 @@
 			}
 
 
-			setTimeout(createSpec, 1500)
-			setTimeout(createSpec, 2000)
-			setTimeout(createSpec, 2500)
+			//setTimeout(createSpec, 1500)
+			
 			setTimeout(createImmigrant,1000)
-			setTimeout(createImmigrant,1500)
-			setTimeout(createImmigrant,1600)
-			setTimeout(enterJudge, 3000)
-			setTimeout(enterJudge, 3000)
-			setTimeout(confirmJudge, 3300)
+
+			//setTimeout(enterJudge, 3000)
+			//setTimeout(exitJudge, 5500)
+			//setTimeout(confirmJudge, 4000)
 
 
 			function randomActivity(){
