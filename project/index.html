@@ -26,6 +26,8 @@
 				top:300px;
 				left:0px;
 				display: inline-flex;
+				overflow-x: auto;
+				width:100%;
 			}
 
 			.immgImg{
@@ -37,12 +39,16 @@
 				top:450px;
 				left:0px;
 				display: inline-flex;
+				overflow-x: auto;
+				width:100%;
 			}
 			.swear{
 				position: absolute;
 				top:50px;
 				left:0px;
 				display: inline-flex;
+				overflow-x: auto;
+				width:35%;
 			}
 
 			figure{
@@ -190,17 +196,18 @@
 					var $figure = $(`<figure></figure>`)
 					var $caption = $(`<figcaption>Immigrant `+iCount+`</figcaption>`)
 					var $immigrant = $(`<img src="person.png"/>`);
-					$immigrant.attr("height","100px")
-					$immigrant.attr("width","100px")
+					$immigrant.attr("height","70px")
+					$immigrant.attr("width","70px")
 					$immigrant.attr("class","immgImg")
 					$figure.attr("id","immg"+iCount)
 					$figure.attr("class", "immg")
+					$caption.attr("id","immgCap"+iCount)
 
 					$(".immigrants").append($figure)
 					$($figure).append($immigrant)
 					$($figure).append($caption)
 
-					setTimeout(checkinImmigrant, 2000 , iCount)
+					setTimeout(checkinImmigrant, 1500 , iCount)
 
 					iCount++;
 				}
@@ -216,12 +223,18 @@
 
 				$("#immg"+id).detach().appendTo('.checkedIn')
 
-				setTimeout(swearImmigrant, 2000 , id)
+				setTimeout(swearImmigrant, 1500 , id)
 			}
 
 			function swearImmigrant(id){
 
 				$("#immg"+id).detach().appendTo('.swear')
+
+
+				setTimeout(function(){
+					$("#immg"+id).detach().appendTo('.checkedIn');
+					$("#immgCap"+id).append("<br><small class='silver'>Sweared In</small>")
+				}, 1500)
 
 			}
 
