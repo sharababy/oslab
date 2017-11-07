@@ -31,16 +31,13 @@ void keepRecource(int i){
 
 void leaveResource(int i){
 
-	sem_wait(&mutex);
-
 	printf("\n %d Thread is leaving Licence\n", i);
 
 	sem_post(&licence);
 
 	printf("\n %d Thread left the Licence\n", i);
 
-	sem_post(&mutex);
-
+	
 }
 
 void *initThread(void* arg){
@@ -60,7 +57,7 @@ void *initThread(void* arg){
 
 
 int main()
-{	
+	{	
 
 	sem_init(&mutex , 0, 1);
 
