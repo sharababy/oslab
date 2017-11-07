@@ -132,7 +132,7 @@
 		<img src="judge.png" class="judge">
 		
 		<div class="swear">
-			<div class="tags white">Swearing In: </div>
+			<div class="tags white">Swearing: </div>
 		</div>		
 
 		<div class="spec"></div>
@@ -268,59 +268,31 @@
 			//setTimeout(confirmJudge, 4000)
 
 
-			function randomActivity(){
+			/*
+				Every 0.5 sec one of 3 things will happen
 
-				/*
-					Every 0.5 sec one of 3 things will happen
+				0. Judge Activity
+					enter,
+					confirm,
+					leave,
+				1. Immigrant Activity
+					enter, 
+					checkIn, 
+					sitDown, 
+					swear, 
+					getCertificate ,
+					leave
+				2. Spectator Acitivity
+					enter,
+					spectate,
+					leave
 
-					0. Judge Activity
-						enter,
-						confirm,
-						leave,
-					1. Immigrant Activity
-						enter, 
-						checkIn, 
-						sitDown, 
-						swear, 
-						getCertificate ,
-						leave
-					2. Spectator Acitivity
-						enter,
-						spectate,
-						leave
+					While the judge is in the building, no one may enter and immigrants may not leave.
 
-						While the judge is in the building, no one may enter and immigrants may not leave.
+					The judge can not confirm until all immigrants who have invoked enter have also invoked checkIn.
 
-						The judge can not confirm until all immigrants who have invoked enter have also invoked checkIn.
-
-						Immigrants can not getCertificate until the judge has executed confirm.
-
-				*/
-
-				var k = parseInt(Math.random()*100)%3
-
-				if(k == 0){
-					
-					
-					
-				}
-
-				if(k == 1){
-					
-					
-					
-				}
-
-				
-				if(k == 2){
-					
-					
-					
-				}
-
-			}
-
-
+					Immigrants can not getCertificate until the judge has executed confirm.
+			*/
 
 			function start(){
 				var i=0;
