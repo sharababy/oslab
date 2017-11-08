@@ -7,7 +7,8 @@
 #define S_COUNT 10
 #define MAX 4
 
-#define RED     "\033[31m" 
+#define RED     "\033[31m"
+#define GREEN	"\033[32m" 
 #define RESET   "\033[0m"
 
 
@@ -29,7 +30,7 @@ void * enterStudent(void * args){
 		printf(RED"\nStudents Limit reached !\n");
 		printf(RESET"\n");
 		sem_post(&mutex);
-		pthread_exit();	
+		pthread_exit(0);	
 	}
 
 	printf("\nStudent %d Enters\n",*u);
@@ -50,9 +51,9 @@ void * enterStudent(void * args){
 	sem_post(&studentDone);
 	sem_wait(&taDone);
 
-	printf("\nStudent %d Finished asking doubt\n",*u);
-
-	pthread_exit();	
+	printf(GREEN"\nStudent %d Finished asking doubt\n",*u);
+	printf(RESET"\n");
+	pthread_exit(0);	
 }
 
 
@@ -63,24 +64,27 @@ void * taAct(){
 	// # cutHair ()
 	// customerDone.wait() 
 	// barberDone.signal() 
-
+	while(1){
 	
-	sem_wait(&student);
-	sem_post(&ta)
+		sem_wait(&student);
+		sem_post(&ta);
 
-	printf("\nTA is clearing doubt\n");
-	sleep(1) // clear doubt
+		printf("\nTA is clearing doubt\n");
+		sleep(1); // clear doubt
 
-	sem_wait(studentDone);
-	sem_post(taDone);
+		sem_wait(&studentDone);
+		sem_post(&taDone);
 
-	pthread_exit();
+
+	}
+
+	pthread_exit(0);
 }
 
 int main()
 {
 		
-	students = MAX;
+	students = 0;
 
 	sem_init(&mutex , 0, 1);
 
@@ -95,7 +99,7 @@ int main()
 
 	int i;
 	int ex = 1;
-	pthread_create(&t[0], NULL , initThread , NULL);
+	pthread_create(&t[0], NULL , taAct , NULL);
 	pthread_create(&t[1], NULL , enterStudent , &ex);
 
 	for ( i = 2; i < S_COUNT; ++i)
@@ -110,6 +114,7 @@ int main()
 	}
 
 
+	
 
 	return 0;
 }
