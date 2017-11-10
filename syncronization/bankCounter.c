@@ -25,8 +25,8 @@ void* transact(void * arg){
 	sleep(1);
 	sem_wait(&counter);
 
-	printf("%d customer got a Counter\n", *u );
-
+	printf(GREEN"%d customer got a Counter\n", *u );
+	printf(RESET"\n");
 	sleep(1);
 
 	int transactionType = rand()%2;
@@ -56,11 +56,12 @@ void* transact(void * arg){
 
 		sem_wait(&mutex);
 
-		int amt = rand()%500;
+		int amt = rand()%1000;
 
-		if ((balance[*u]-amt) <= 100 && (globalBal-amt) <= globalMinBal)
+		if ((balance[*u]-amt) <= 100 || (globalBal-amt) <= globalMinBal)
 		{
-			printf("\nCannot debit from %d cutomer Acc | Balance = %d | Amt = %d | Global Bal = %d \n", *u , balance[*u] , amt , globalBal);
+			printf(RED"\nCannot debit from %d cutomer Acc | Balance = %d | Amt = %d | Global Bal = %d \n", *u , balance[*u] , amt , globalBal);
+			printf(RESET"\n");
 		}
 		else{
 
@@ -69,6 +70,7 @@ void* transact(void * arg){
 			globalBal -= amt;
 
 			printf("\nDebted from %d cutomer Acc | Balance = %d | Amt = %d | Global Bal = %d \n", *u , balance[*u] , amt , globalBal);
+			
 		}
 		sem_post(&mutex);
 
