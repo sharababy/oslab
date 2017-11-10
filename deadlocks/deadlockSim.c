@@ -11,15 +11,23 @@
 #define SEM_NAME "/commonMutex2"
 
 
-sem_t *g;
+sem_t *g,*h;
 
 void leave(){	
 	int p;
 	sem_getvalue(g,&p);
-	printf("\nReleasing Lock -> %d\n",p);
+	printf("\nReleasing Lock -> mut 1 = %d\n",p);
 	sem_post(g);
 	sem_getvalue(g,&p);
-	printf("\nReleasing Lock -> %d\n",p);
+	printf("\nReleasing Lock -> mut 1 = %d\n",p);
+
+	sem_getvalue(h,&p);
+	printf("\nReleasing Lock -> mut 2 =%d\n",p);
+	sem_post(h);
+	sem_getvalue(h,&p);
+	printf("\nReleasing Lock -> mut 2 = %d\n",p);
+	
+
 	exit(0);
 
 }
@@ -39,6 +47,8 @@ int main()
 
 
 	sem_t *mutex2 = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
+
+	h = mutex2;
 
 	printf("Opened Mut 2\n");
 
