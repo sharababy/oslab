@@ -7,8 +7,8 @@
 #include <sys/stat.h>        /* For mode constants */
 #include <signal.h>
 
-#define SNAME "/commonMutex1"
-#define SEM_NAME "/commonMutex2"
+#define SNAME "/ccommonMutex1"
+#define SEM_NAME "/ccommonMutex2"
 
 
 sem_t *g;
@@ -20,6 +20,8 @@ void leave(){
 	sem_post(g);
 	sem_getvalue(g,&p);
 	printf("\nReleasing Lock -> mut 1 = %d\n",p);
+
+	sem_unlink(SNAME);
 
 	exit(0);
 
