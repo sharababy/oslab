@@ -4,28 +4,34 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#define C_COUNT 10
+#define C_COUNT 11
 
 #define RED     "\033[31m"
-#define GREEN	"\033[32m" 
+#define GREEN	"\033[32m"
+#define BLUE	"\033[36m"
 #define RESET   "\033[0m"
 
 
-int balance[C_COUNT], val[C_COUNT], globalBal, globalMinBal;
+int balance[C_COUNT], val[C_COUNT], globalBal, globalMinBal,counterNo,trans,token;
 
-sem_t counter,mutex;
+sem_t counter,mutex,cmut;
 
 
 void* transact(void * arg){
 
 	int *u = arg;
 
-	printf("%d customer is Entered for a counter \n", *u);
+	printf("\n%d customer Entered Bank \n", *u);
 
 	sleep(1);
 	sem_wait(&counter);
 
-	printf(GREEN"%d customer got a Counter\n", *u );
+	sem_wait(&cmut);
+	counterNo++;
+	token++;
+	sem_post(&cmut);
+
+	printf(BLUE"\n%d customer got Counter %d and Token ID %d", *u,counterNo,token );
 	printf(RESET"\n");
 	sleep(1);
 
@@ -37,14 +43,15 @@ void* transact(void * arg){
 
 		sem_wait(&mutex);
 
+		trans++;
 		int amt = rand()%1000;
 
 		balance[*u] += amt;
 
 		globalBal += amt;
 
-		printf("\nCredited from %d cutomer Acc | Balance = %d | Amt = %d | Global Bal = %d \n", *u , balance[*u] , amt , globalBal);
-
+		printf(GREEN"\nCredited from %d cutomer \n\t Acc Balance = %d \n\t Amt = %d \n\t Global Bal = %d \n\t Transaction ID = %d\n\n", *u , balance[*u] , amt , globalBal,trans);
+		printf(RESET"\n");
 		sem_post(&mutex);
 
 		// credit
@@ -56,21 +63,24 @@ void* transact(void * arg){
 
 		sem_wait(&mutex);
 
+		trans++;
 		int amt = rand()%1000;
 
 		if ((balance[*u]-amt) <= 100 || (globalBal-amt) <= globalMinBal)
 		{
-			printf(RED"\nCannot debit from %d cutomer Acc | Balance = %d | Amt = %d | Global Bal = %d \n", *u , balance[*u] , amt , globalBal);
+			printf(RED"\nCannot debit from %d cutomer \n\t Acc Balance = %d \n\t Amt = %d \n\t Global Bal = %d \n\t Transaction ID = %d\n\n", *u , balance[*u] , amt , globalBal,trans);
 			printf(RESET"\n");
 		}
 		else{
+
+
 
 			balance[*u] -= amt;
 
 			globalBal -= amt;
 
-			printf("\nDebted from %d cutomer Acc | Balance = %d | Amt = %d | Global Bal = %d \n", *u , balance[*u] , amt , globalBal);
-			
+			printf(GREEN"\nDebted from %d cutomer\n\t Acc Balance = %d \n\t Amt = %d \n\t Global Bal = %d \n\t Transaction ID = %d\n\n", *u , balance[*u] , amt , globalBal,trans);
+			printf(RESET"\n");
 		}
 		sem_post(&mutex);
 
@@ -79,18 +89,25 @@ void* transact(void * arg){
 
 	}
 
-
+	sem_wait(&cmut);
+	counterNo--;
+	sem_post(&cmut);
 
 	sem_post(&counter);
-
+	
 	sleep(1);
 }
 
 
 int main()
-{
-	
+{	
+	counterNo = 0;
+	trans = 0;
+	token =0;
+
 	sem_init(&mutex , 0, 1);
+
+	sem_init(&cmut , 0, 1);
 
 	sem_init(&counter , 0, 3);
 
