@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -43,9 +42,11 @@ void hrrn_gen(int pid[] , int at[] , int bt[],int pri[]){
 	for (int i = 1; i < 5; ++i)
 	{   
 		float max = -1;
-		for(int k=1 ; k<5 ; k++){
+		for(int k=1 ; k<5 ; k++){ // accumulation of new arriving processes
 			
-			if(ct[last] >= at[k] && pre[k] != 101 ){
+			if(ct[last] >= at[k] && pre[k] != 101 ){ 
+				// checking of process has arrived
+				// 101 indicates a completed process
 				pre[k] = bt[k];
 				
 				u++; 			
@@ -64,15 +65,20 @@ void hrrn_gen(int pid[] , int at[] , int bt[],int pri[]){
 			
 			for(int ff =1 ; ff < 5 ; ff++){
 				if(rr[ff]!=-2){
-					rr[ff] = (ct[last] - at[ff] + bt[ff])/bt[ff];
+					// -2 indicates a completed process
+					// -1 indicates a new process
+
+					rr[ff] = (float)(ct[last] - at[ff] + bt[ff])/bt[ff];
+					// calculation of response ratio
+
 					printf(" %f ",rr[ff]);
 				}
 			}
 		
-
+			// calculation of max response ratio
 			for(int k =1; k<5 ; k++){
 				if(max < rr[k]){	
-					max = pre[k];
+					max = pre[k]; // max = burst time
 					index=k;
 				}
 			}			
@@ -83,7 +89,7 @@ void hrrn_gen(int pid[] , int at[] , int bt[],int pri[]){
 			pre[index] = 101;
 			rr[index] = -2;				
 			printf("\n\nct[last]: %d , max: %f ,index: %d , last: %d  \n\n",ct[last],max,index,last);
-			ct[index]=ct[last]+ max;
+			ct[index]=ct[last]+ max; // max = burst time
 			tat[index]=ct[index]-at[index];
 			wt[index]=tat[index]-bt[index];
 			last = index;

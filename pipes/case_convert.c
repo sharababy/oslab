@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-
 void upper_string(char s[]) {
    int c = 0;
  
@@ -15,9 +14,6 @@ void upper_string(char s[]) {
       c++;
    }
 }
-
-
-
 
 int main(void)
 {
@@ -36,21 +32,14 @@ int main(void)
 
         if(childpid == 0)
         {
-                
                 close(fd[0]);
-
                 printf("\nSending String : '%s'\n",string);
-                
-                
-
                 write(fd[1], string, (strlen(string)+1));
                 exit(0);
         }
         else
         {       
-                //wait(NULL)
                 close(fd[1]);
-
                 nbytes = read(fd[0], readbuffer, sizeof(readbuffer));
                 upper_string(readbuffer);
                 printf("\nReceived string: '%s'\n", readbuffer);
