@@ -66,8 +66,6 @@ int main()
 	sem_post(mutex2);
 	sem_post(mutex1);
 
-	
-
 	return 0;
 }
 

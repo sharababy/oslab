@@ -23,7 +23,7 @@
 
 			.checkedIn{
 				position: absolute;
-				top:300px;
+				top:310px;
 				left:0px;
 				display: inline-flex;
 				overflow-x: auto;
@@ -60,7 +60,7 @@
 			}
 			.spec{
 				position: absolute;
-				top:200px;
+				top:175px;
 				right:0px;
 				display: inline-flex;
 			}
@@ -131,8 +131,9 @@
 		<div class="judgeSentence grey"></div>
 		<img src="judge.png" class="judge">
 		
-		<div class="swear">
-			<div class="tags white">Swearing: </div>
+
+		<div class="swear" id="swear">
+			<div class="tags white">Swearing: </div>	
 		</div>		
 
 		<div class="spec"></div>
@@ -141,7 +142,7 @@
 			<div class="tags silver">Checked In:</div>
 		</div>
 		<div class="immigrants">
-			<div class="tags silver">Entered:</div>
+			<div class="tags silver">Entery / Exit:</div>
 		</div>
 
 		<button id="makeImmigrant" onclick="return createImmigrant()">Enter Immigrant</button>
@@ -153,7 +154,22 @@
 
 			var judgeState = 0;
 
+			var swearingIn = 0;
 
+			var currentSwear = 0;
+
+			var intervalID;
+
+			function judgeAct(){
+				
+				var k = parseInt(Math.random()*10)%10;
+
+				if (judgeState == 0) {
+
+					setTimeout(enterJudge,k * 1300);
+					
+				}
+			}
 
 			function enterJudge(){
 
@@ -162,6 +178,9 @@
 
 				judgeState = 1;
 
+				
+
+				setTimeout(confirmJudge,3000)
 			}
 
 			function exitJudge(){
@@ -177,6 +196,22 @@
 
 				setTimeout(function (){ $(".judgeSentence").empty(); } , 2000)
 
+				intervalID = setInterval(swearImmigrants, 3000);
+
+
+			}
+
+			function swearImmigrants(){
+
+				swearImmigrant(currentSwear);
+				currentSwear++;
+
+				if (currentSwear == iCount) {
+					clearInterval(intervalID);
+					console.log("Cleared");
+					setTimeout(exitJudge,2000);
+					setTimeout(exitAllImmg,3000);
+				}
 			}
 
 			function notify(msg){
@@ -186,9 +221,6 @@
 				setTimeout(function (){ $(".notifyBox").empty(); } , 2000)
 
 			}
-
-
-
 
 			function createImmigrant(){
 
@@ -213,7 +245,7 @@
 				}
 
 				else{
-
+					notify("Cannot enter , too late.")
 				}
 
 				return false
@@ -221,23 +253,35 @@
 
 			function checkinImmigrant(id){
 
+				
 				$("#immg"+id).detach().appendTo('.checkedIn')
 
-				setTimeout(swearImmigrant, 1500 , id)
+				//console.log($(".swear").children().length)
+
+				
+
+				//setTimeout(swearImmigrant, 1500 , id)
 			}
 
 			function swearImmigrant(id){
 
+				
+
+				
 				$("#immg"+id).detach().appendTo('.swear')
 
 
 				setTimeout(function(){
 					$("#immg"+id).detach().appendTo('.checkedIn');
 					$("#immgCap"+id).append("<br><small class='silver'>Sweared In</small>")
+					
 				}, 1500)
 
 			}
 
+			function exitAllImmg(){
+				
+			}
 
 
 			function createSpec(){
@@ -247,21 +291,51 @@
 				var $spect = $('<img src="spec'+t+'.png"/>');
 				$figure.attr("id","spec"+sCount)
 				$figure.attr("class", "spect")
-
+				$caption.attr("id","specCap"+sCount)
 				$($spect).attr("class","spectImage")
-				sCount++;
+				
 
 				$(".spec").append($figure)
 				$($figure).append($spect)
 				$($figure).append($caption)
 
-			
+				var k = parseInt(Math.random()*100)%20;
+
+				console.log(k);
+
+				setTimeout(addSpecCap, k*1000,sCount )
+
+				setTimeout(removeSpec, k*1200,sCount)
+
+				sCount++;
 			}
+
+			function removeSpec(sC){
+				$("#spec"+sC).remove();
+					
+			}
+			function addSpecCap(sC){
+
+				$("#specCap"+sC).append("<br><small class='silver'>Leaving</small>")
+					
+			}
+
+			function newSpecAct(){
+				
+				if ( $(".spec").children().length < 7 && judgeState == 0) {
+
+					createSpec();
+				}
+			}
+
 
 
 			//setTimeout(createSpec, 1500)
 			
-			setTimeout(createImmigrant,1000)
+			
+			judgeAct();
+			setInterval(newSpecAct, 1000);
+
 
 			//setTimeout(enterJudge, 3000)
 			//setTimeout(exitJudge, 5500)
@@ -293,14 +367,6 @@
 
 					Immigrants can not getCertificate until the judge has executed confirm.
 			*/
-
-			function start(){
-				var i=0;
-				while(i == 10){
-					setTimeout(randomActivity,500)
-					i++;
-				}
-			}
 
 
 		</script>

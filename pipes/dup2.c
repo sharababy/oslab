@@ -10,11 +10,11 @@ int main(void)
         int     fd[2], nbytes;
         char    string[] = "Oslab Test !";
 
-        printf("%s",string);
+        
         pipe(fd);
 
         dup2(fd[0],0);
-        
+		//printf("%s",string);       
         system("wc");
         return(0);
 }
