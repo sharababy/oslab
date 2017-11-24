@@ -102,7 +102,9 @@
 			.silver{
 				color:#888;
 			}
-
+			.red{
+				color:red;
+			}
 			#makeImmigrant{
 				position: absolute;
 				bottom:10px;
@@ -171,12 +173,14 @@
 
 			function enterJudge(){
 
+				$("#gate").html("--Entry Blocked--");
+				$("#gate").addClass("red");
+				$("#gate").removeClass("silver");
+
 				$(".judge").css({"right":"47%"});
 
 
 				judgeState = 1;
-
-				
 
 				setTimeout(confirmJudge,3000)
 			}
@@ -185,6 +189,9 @@
 
 				$(".judge").css({"right":"-200px"});
 				judgeState = 0;
+				$("#gate").html("Entry / Exit");
+				$("#gate").addClass("silver");
+				$("#gate").removeClass("red");
 				judgeAct();
 
 			}
