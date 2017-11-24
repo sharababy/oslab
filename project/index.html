@@ -118,6 +118,9 @@
 				font-size: 30px;
 				font-family: sans-serif;
 			}
+			#gavel{
+				opacity: :0;
+			}
 
 		</style>
 	</head>
@@ -147,6 +150,10 @@
 			<div class="tags silver" id="gate">Entry / Exit:</div>
 		</div>
 
+		<audio id="gavel">
+		  <source src="gavel.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+		</audio>
 
 		<script>
 
@@ -162,7 +169,7 @@
 
 			function judgeAct(){
 				
-				var k = parseInt(Math.random()*10)%10 + 4;
+				var k = parseInt(Math.random()*10)%5 + 4;
 
 				if (judgeState == 0) {
 
@@ -173,7 +180,7 @@
 
 			function enterJudge(){
 
-				$("#gate").html("--Entry Blocked--");
+				$("#gate").html("--Entry Blocked--: Judge is Inside");
 				$("#gate").addClass("red");
 				$("#gate").removeClass("silver");
 
@@ -198,13 +205,12 @@
 
 			function confirmJudge(){
 
+				$("#gavel")[0].play();
 				$(".judgeSentence").html("Confirmed !");
 
 				setTimeout(function (){ $(".judgeSentence").empty(); } , 2000)
 
 				intervalID = setInterval(swearImmigrants, 3000);
-
-
 			}
 
 			function swearImmigrants(){
@@ -215,6 +221,9 @@
 				if (currentSwear == iCount) {
 					clearInterval(intervalID);
 					console.log("Cleared");
+					$("#gavel")[0].play();
+					$(".judgeSentence").html("Concluded !");
+					setTimeout(function (){ $(".judgeSentence").empty(); } , 2000)
 					setTimeout(exitJudge,2000);
 					setTimeout(exitAllImmg,3000);
 				}
@@ -312,7 +321,7 @@
 				$($figure).append($spect)
 				$($figure).append($caption)
 
-				var k = parseInt(Math.random()*100)%20;
+				var k = 10 + parseInt(Math.random()*100)%20;
 
 				// console.log(k);
 
