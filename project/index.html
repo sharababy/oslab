@@ -133,7 +133,7 @@
 		
 
 		<div class="swear" id="swear">
-			<div class="tags white">Swearing: </div>	
+			<div class="tags white">Swear / Get Certificate: </div>	
 		</div>		
 
 		<div class="spec"></div>
@@ -142,10 +142,8 @@
 			<div class="tags silver">Checked In:</div>
 		</div>
 		<div class="immigrants">
-			<div class="tags silver">Entery / Exit:</div>
+			<div class="tags silver" id="gate">Entry / Exit:</div>
 		</div>
-
-		<button id="makeImmigrant" onclick="return createImmigrant()">Enter Immigrant</button>
 
 
 		<script>
@@ -162,7 +160,7 @@
 
 			function judgeAct(){
 				
-				var k = parseInt(Math.random()*10)%10;
+				var k = parseInt(Math.random()*10)%10 + 4;
 
 				if (judgeState == 0) {
 
@@ -187,6 +185,7 @@
 
 				$(".judge").css({"right":"-200px"});
 				judgeState = 0;
+				judgeAct();
 
 			}
 
@@ -264,9 +263,6 @@
 			}
 
 			function swearImmigrant(id){
-
-				
-
 				
 				$("#immg"+id).detach().appendTo('.swear')
 
@@ -279,8 +275,18 @@
 
 			}
 
+			function exitImmg(id){
+				$("#immg"+id).detach().appendTo('.immigrants');
+				$("#immgCap"+id).append("<br><small class='silver'>Leaving</small>")
+				setTimeout(function(){ $("#immg"+id).remove() }, 2000)
+			}
+
 			function exitAllImmg(){
-				
+
+				for (var i = 0; i < iCount; i++) {
+					exitImmg(i);
+				}
+
 			}
 
 
@@ -301,7 +307,7 @@
 
 				var k = parseInt(Math.random()*100)%20;
 
-				console.log(k);
+				// console.log(k);
 
 				setTimeout(addSpecCap, k*1000,sCount )
 
@@ -329,12 +335,24 @@
 			}
 
 
+			function newImmgAct(){
+					
+				console.log($(".checkedIn").children().length)
+
+				if ( $(".checkedIn").children().length < 9 && judgeState == 0) {
+
+					createImmigrant();
+				}
+			}
+
+
 
 			//setTimeout(createSpec, 1500)
 			
 			
 			judgeAct();
 			setInterval(newSpecAct, 1000);
+			setInterval(newImmgAct, 1000);
 
 
 			//setTimeout(enterJudge, 3000)
